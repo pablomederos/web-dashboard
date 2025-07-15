@@ -1,19 +1,60 @@
 # Dashboard de Sitios
 
-Este proyecto es un dashboard web minimalista y moderno para monitorear el estado de múltiples sitios web. Muestra el favicon, nombre y un semáforo de estado para cada sitio listado en un archivo `sites.json` editable.
+Este proyecto es un dashboard web minimalista y moderno para monitorear el estado de múltiples sitios web. Muestra el favicon, nombre y un semáforo de estado para cada sitio listado.
 
 ## Características
-- Visualización clara y responsiva de sitios web.
-- Semáforo de estado (online/offline) para cada sitio.
-- Favicon y nombre de cada sitio.
-- Diseño moderno, minimalista y adaptable a móviles.
-- Edición en vivo del archivo `sites.json` gracias a un volumen Docker.
+- Visualización clara y responsiva de sitios web
+- Semáforo de estado (online/offline) para cada sitio
+- Favicon y nombre de cada sitio
+- Diseño moderno, minimalista y adaptable a móviles
+- Configuración mediante archivos JSON externos
+- Actualización en tiempo real de la configuración
 
-## Configuración del archivo `sites.json`
-
-El archivo `sites.json` se encuentra en `src/public/data/sites.json` y debe tener el siguiente formato:
+## Estructura del Proyecto
 
 ```
+lacuevadev/
+├── data/           # Carpeta de configuración externa (opcional)
+│   ├── config.json # Configuración general del sitio
+│   └── sites.json  # Lista de sitios a monitorear
+├── src/
+│   ├── data/      # Configuración por defecto
+│   ├── public/    # Archivos estáticos
+│   └── server.js  # Servidor Express
+└── compose.yml    # Configuración de Docker
+```
+
+## Configuración
+
+El dashboard requiere dos archivos de configuración que pueden estar ubicados en la carpeta `src/data/` (por defecto) o en una carpeta externa:
+
+### 1. Configuración del Sitio (`config.json`)
+
+Este archivo contiene la configuración general del dashboard:
+
+```json
+{
+  "site": {
+    "title": "Dashboard de Sitios",
+    "footer": {
+      "copyright": "© 2025",
+      "author": "Tu Nombre",
+      "links": [
+        {
+          "text": "Nombre del Enlace",
+          "url": "https://ejemplo.com"
+        }
+      ]
+    }
+  }
+}
+```
+
+### 2. Configuración de Sitios Monitoreados (`sites.json`)
+
+Este archivo contiene la lista de sitios a monitorear:
+
+```json
 [
   {
     "name": "Nombre del sitio",
@@ -26,13 +67,26 @@ El archivo `sites.json` se encuentra en `src/public/data/sites.json` y debe tene
 ]
 ```
 
-Puedes agregar, quitar o modificar los sitios según tus necesidades. Los cambios se reflejan automáticamente en el dashboard.
+Puedes modificar ambos archivos según tus necesidades. Los cambios se reflejan automáticamente en el dashboard.
 
-## Uso con Docker Compose
+### Estructura de Archivos
 
-El proyecto incluye un archivo `compose.yml` para facilitar el despliegue con Docker. El servicio expone el dashboard en el puerto 8080 del host y monta el archivo `sites.json` como volumen para edición en vivo.
+```
+lacuevadev/
+├── data/           # Carpeta de configuración (montada como volumen)
+│   ├── config.json # Configuración general del sitio
+│   └── sites.json  # Lista de sitios a monitorear
+├── src/
+│   ├── public/     # Archivos estáticos
+│   └── server.js   # Servidor Express
+└── compose.yml     # Configuración de Docker
+```
 
-### Comandos básicos
+## Despliegue con Docker Compose
+
+El proyecto puede desplegarse de dos formas:
+
+### 1. Usando la configuración por defecto
 
 1. **Construir y levantar el servicio:**
    ```bash
@@ -40,27 +94,54 @@ El proyecto incluye un archivo `compose.yml` para facilitar el despliegue con Do
    ```
 
 2. **Acceder al dashboard:**
-   Abre tu navegador en [http://localhost:8080](http://localhost:8080)
+   - Abre tu navegador en [http://localhost:8080](http://localhost:8080)
+   - El sitio usará la configuración ubicada en `src/data/`
 
-3. **Editar los sitios:**
-   Edita el archivo `data/sites.json` en tu máquina local. Los cambios se reflejan automáticamente en el dashboard.
+### 2. Usando configuración externa (recomendado)
 
+1. **Crear estructura de configuración:**
+   ```bash
+   # Crear directorio de datos
+   mkdir -p data
+   
+   # Crear archivos de configuración vacíos
+   echo '{"site":{"title":"Dashboard de Sitios","footer":{"copyright":"© 2025","author":"","links":[]}}}' > data/config.json
+   echo '[]' > data/sites.json
+   ```
 
-### Ejemplo de sección de volumen en `compose.yml`:
+2. **Modificar el `compose.yml`:**
+   ```yaml
+   services:
+     web-dashboard:
+       build: .
+       container_name: dashboard_app
+       ports:
+         - "8080:3000"
+       restart: unless-stopped
+       volumes:
+         - ./data:/app/src/data:rw  # Monta la configuración externa
+   ```
 
-```
-services:
-  web-dashboard:
-    build: .
-    container_name: dashboard_app
-    ports:
-      - "8080:3000"
-    restart: always
-    volumes:
-      - ./data:/app/src/public/data
-```
+3. **Configurar el dashboard:**
+   - Edita `data/config.json` con la configuración del sitio
+   - Edita `data/sites.json` con la lista de sitios a monitorear
+   - Los archivos deben existir aunque estén vacíos
 
-Así puedes editar el archivo `sites.json` (y cualquier otro archivo de ese folder) desde fuera del contenedor y ver los cambios en tiempo real.
+4. **Construir y levantar el servicio:**
+   ```bash
+   sudo docker compose up -d --build
+   ```
+
+5. **Acceder al dashboard:**
+   - Abre tu navegador en [http://localhost:8080](http://localhost:8080)
+   - Los cambios en los archivos de configuración se reflejan en tiempo real
+
+## Notas importantes
+
+- Si se configura el `compose.yml` para usar configuración externa, los archivos deben existir aunque estén vacíos
+- Si no se monta un volumen externo, se usará la configuración por defecto en `src/data/`
+- Los cambios en los archivos de configuración se aplican automáticamente sin reiniciar el contenedor
+- Se recomienda usar configuración externa para mantener la configuración al actualizar la imagen
 
 ---
 
