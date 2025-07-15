@@ -1,0 +1,10 @@
+services:
+  web-dashboard:
+    build: .
+    container_name: dashboard_app
+    ports:
+      - "8080:3000" # Mapea el puerto 80 del host al 3000 del contenedor
+    restart: unless-stopped
+    # Opcional: Montar un volumen para actualizar en vivo
+    volumes:
+      - ./data:/app/public/data:rw

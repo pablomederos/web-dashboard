@@ -1,0 +1,19 @@
+# Dependencies
+node_modules/
+
+# PM2
+.pm2/
+
+# Log files
+logs
+*.log
+npm-debug.log*
+
+# Environment variables file
+.env
+.env.*
+
+# Mac specific
+.DS_Store
+
+/data

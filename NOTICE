@@ -1,0 +1,7 @@
+This project uses the following open source dependencies:
+
+- express (MIT License)
+
+Please refer to each package's repository for full license text and details.
+
+express: https://github.com/expressjs/express

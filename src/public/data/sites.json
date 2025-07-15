@@ -1,0 +1,14 @@
+[
+  {
+    "name": "Google",
+    "url": "https://www.google.com"
+  },
+  {
+    "name": "GitHub",
+    "url": "https://github.com"
+  },
+  {
+    "name": "Sitio Inexistente",
+    "url": "https://un-sitio-que-no-existe-12345.com"
+  }
+]
