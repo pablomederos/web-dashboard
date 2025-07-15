@@ -57,7 +57,7 @@ services:
       - "8080:3000"
     restart: always
     volumes:
-      - ./src/public/data:/app/src/public/data
+      - ./data:/app/src/public/data
 ```
 
 Así puedes editar el archivo `sites.json` (y cualquier otro archivo de ese folder) desde fuera del contenedor y ver los cambios en tiempo real.
