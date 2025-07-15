@@ -2,10 +2,38 @@ document.addEventListener('DOMContentLoaded', () => {
   const gridContainer = document.getElementById('grid-container');
   const searchInput = document.getElementById('search-input');
   const clearSearchBtn = document.getElementById('clear-search');
+  const siteTitle = document.getElementById('site-title');
+  const headerTitle = document.getElementById('header-title');
+  const siteFooter = document.getElementById('site-footer');
   let allSites = [];
 
+  // Cargar la configuración del sitio
+  fetch('/api/config')
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('No se pudo cargar la configuración');
+      }
+      return response.json();
+    })
+    .then(config => {
+      // Aplicar título
+      document.title = config.site.title;
+      headerTitle.textContent = config.site.title;
+
+      // Construir footer
+      const footerContent = document.createElement('div');
+      footerContent.innerHTML = `
+        ${config.site.footer.copyright} ${config.site.footer.author} · 
+        ${config.site.footer.links.map(link => 
+          `<a href="${link.url}" target="_blank" rel="noopener">${link.text}</a>`
+        ).join(' · ')}
+      `;
+      siteFooter.appendChild(footerContent);
+    })
+    .catch(error => console.error('Error loading config:', error));
+
   // Leer el documento JSON cada vez que se accede al sitio.
-  fetch('data/sites.json')
+  fetch('/api/sites')
     .then(response => response.json())
     .then(sites => {
       allSites = sites;

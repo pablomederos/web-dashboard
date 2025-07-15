@@ -1,0 +1,19 @@
+{
+  "site": {
+    "title": "Dashboard de Sitios",
+    "footer": {
+      "copyright": "© 2025",
+      "author": "Pablo Gabriel Mederos",
+      "links": [
+        {
+          "text": "La Cueva DEV",
+          "url": "https://lacuevadev.cloud"
+        },
+        {
+          "text": "La Cueva del Insecto",
+          "url": "https://lacuevadelinsecto.dev"
+        }
+      ]
+    }
+  }
+}

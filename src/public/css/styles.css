@@ -267,6 +267,18 @@ header h1 {
   left: 0;
   bottom: 0;
   backdrop-filter: blur(8px);
+}
+
+.footer a {
+  color: white;
+  text-decoration: none;
+  opacity: 0.9;
+  transition: opacity var(--transition-smooth);
+}
+
+.footer a:hover {
+  opacity: 1;
+  text-decoration: underline;
   z-index: 99;
 }
 @media (max-width: 600px) {
