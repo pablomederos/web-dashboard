@@ -1,25 +1,64 @@
 document.addEventListener('DOMContentLoaded', () => {
   const gridContainer = document.getElementById('grid-container');
+  const searchInput = document.getElementById('search-input');
+  const clearSearchBtn = document.getElementById('clear-search');
+  let allSites = [];
 
-  // (2) Leer el documento JSON cada vez que se accede al sitio.
+  // Leer el documento JSON cada vez que se accede al sitio.
   fetch('data/sites.json')
     .then(response => response.json())
     .then(sites => {
-      if (sites.length === 0) {
-        gridContainer.innerHTML = '<p>No hay sitios configurados en sites.json</p>';
-        return;
-      }
-      sites.forEach(site => {
-        const card = createSiteCard(site);
-        gridContainer.appendChild(card);
-        // (3) Testear si la URL está viva.
-        checkSiteStatus(site, card);
-      });
+      allSites = sites;
+      renderSites(sites);
     })
     .catch(error => {
       console.error('Error al cargar el archivo de sitios:', error);
       gridContainer.innerHTML = '<p>Error al cargar la configuración de sitios.</p>';
     });
+
+  function renderSites(sites) {
+    gridContainer.innerHTML = '';
+    if (!sites || sites.length === 0) {
+      gridContainer.innerHTML = '<p>No hay sitios configurados en sites.json</p>';
+      return;
+    }
+    sites.forEach(site => {
+      const card = createSiteCard(site);
+      gridContainer.appendChild(card);
+      checkSiteStatus(site, card);
+    });
+  }
+
+  // Filtrado en tiempo real
+  if (searchInput) {
+    searchInput.addEventListener('input', (e) => {
+      const value = e.target.value.trim().toLowerCase();
+      if (!value) {
+        renderSites(allSites);
+        return;
+      }
+      const filtered = allSites.filter(site =>
+        site.name.toLowerCase().includes(value) ||
+        site.url.toLowerCase().includes(value)
+      );
+      renderSites(filtered);
+    });
+  }
+  if (clearSearchBtn) {
+    clearSearchBtn.addEventListener('click', () => {
+      searchInput.value = '';
+      renderSites(allSites);
+      searchInput.focus();
+    });
+  }
+
+  // Atajo Ctrl+K para enfocar la barra de búsqueda
+  document.addEventListener('keydown', (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+      e.preventDefault();
+      if (searchInput) searchInput.focus();
+    }
+  });
 });
 
 function createSiteCard(site) {

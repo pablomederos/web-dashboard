@@ -1,3 +1,60 @@
+/* Barra de búsqueda */
+.search-bar-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 32px 0 24px 0;
+  gap: 8px;
+  width: 100%;
+  position: relative;
+  z-index: 10;
+}
+
+.search-input {
+  padding: 8px 12px;
+  border: 1px solid #d0d4da;
+  border-radius: 6px;
+  font-size: 1rem;
+  width: 260px;
+  transition: border-color 0.2s;
+}
+.search-input:focus {
+  outline: none;
+  border-color: #34495e;
+}
+
+.clear-search {
+  background: #e6e8eb;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  color: #34495e;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+.clear-search:hover {
+  background: #d0d4da;
+}
+@media (max-width: 600px) {
+  .search-bar-container {
+    margin: 10px 0 0 0;
+  }
+  .search-input {
+    width: 100%;
+    min-width: 0;
+    font-size: 0.98rem;
+  }
+  .clear-search {
+    width: 28px;
+    height: 28px;
+    font-size: 1rem;
+  }
+}
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   margin: 0;
@@ -7,6 +64,7 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100dvh;
+  padding-top: 80px;
 }
 
 header {
@@ -41,7 +99,6 @@ header h1 {
   margin-top: 90px;
   margin-bottom: 40px;
 }
-  box-sizing: border-box;
 }
 /* Responsividad para móviles */
 @media (max-width: 600px) {

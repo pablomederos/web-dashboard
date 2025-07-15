@@ -43,7 +43,7 @@ El proyecto incluye un archivo `compose.yml` para facilitar el despliegue con Do
    Abre tu navegador en [http://localhost:8080](http://localhost:8080)
 
 3. **Editar los sitios:**
-   Edita el archivo `src/public/data/sites.json` en tu máquina local. Los cambios se reflejan automáticamente en el dashboard.
+   Edita el archivo `data/sites.json` en tu máquina local. Los cambios se reflejan automáticamente en el dashboard.
 
 
 ### Ejemplo de sección de volumen en `compose.yml`:
