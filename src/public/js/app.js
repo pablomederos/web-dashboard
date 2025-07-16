@@ -91,6 +91,7 @@ function createSiteCard(site) {
   const favicon = document.createElement('img');
   favicon.className = 'favicon';
   favicon.alt = 'favicon';
+  favicon.src = `https://www.google.com/s2/favicons?domain=${encodeURIComponent(site.url)}`;
 
   const siteName = document.createElement('span');
   siteName.className = 'site-name';
