@@ -2,12 +2,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const gridContainer = document.getElementById('grid-container');
   const searchInput = document.getElementById('search-input');
   const clearSearchBtn = document.getElementById('clear-search');
-  const siteTitle = document.getElementById('site-title');
   const headerTitle = document.getElementById('header-title');
   const siteFooter = document.getElementById('site-footer');
   let allSites = [];
 
-  // Cargar la configuración del sitio
   fetch('/api/config')
     .then(response => {
       if (!response.ok) {
@@ -16,11 +14,9 @@ document.addEventListener('DOMContentLoaded', () => {
       return response.json();
     })
     .then(config => {
-      // Aplicar título
       document.title = config.site.title;
       headerTitle.textContent = config.site.title;
 
-      // Construir footer
       const footerContent = document.createElement('div');
       footerContent.innerHTML = `
         ${config.site.footer.copyright} ${config.site.footer.author} · 
@@ -32,7 +28,6 @@ document.addEventListener('DOMContentLoaded', () => {
     })
     .catch(error => console.error('Error loading config:', error));
 
-  // Leer el documento JSON cada vez que se accede al sitio.
   fetch('/api/sites')
     .then(response => response.json())
     .then(sites => {
@@ -57,7 +52,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Filtrado en tiempo real
   if (searchInput) {
     searchInput.addEventListener('input', (e) => {
       const value = e.target.value.trim().toLowerCase();
@@ -80,7 +74,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Atajo Ctrl+K para enfocar la barra de búsqueda
   document.addEventListener('keydown', (e) => {
     if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
       e.preventDefault();
@@ -93,23 +86,17 @@ function createSiteCard(site) {
   const card = document.createElement('a');
   card.className = 'site-card';
   card.href = site.url;
-  card.target = '_blank'; // Abrir en una nueva pestaña
   card.rel = 'noopener noreferrer';
 
-  // Favicon a la izquierda
   const favicon = document.createElement('img');
   favicon.className = 'favicon';
-  favicon.src = `https://www.google.com/s2/favicons?domain=${encodeURIComponent(site.url)}`;
   favicon.alt = 'favicon';
 
-  // Nombre del sitio en el centro
   const siteName = document.createElement('span');
   siteName.className = 'site-name';
   siteName.textContent = site.name;
 
-  // Semáforo a la derecha
   const statusLight = document.createElement('div');
-  statusLight.className = 'status-light yellow'; // Inicia en amarillo mientras se verifica
 
   card.appendChild(favicon);
   card.appendChild(siteName);
@@ -122,6 +109,5 @@ async function checkSiteStatus(site, cardElement) {
   const response = await fetch(`/check-status?url=${encodeURIComponent(site.url)}`);
   const result = await response.json();
   
-  statusLight.className = 'status-light'; // Resetea clases
   statusLight.classList.add(result.status === 'online' ? 'green' : 'red');
 }

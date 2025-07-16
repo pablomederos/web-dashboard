@@ -13,7 +13,7 @@ Este proyecto es un dashboard web minimalista y moderno para monitorear el estad
 ## Estructura del Proyecto
 
 ```
-lacuevadev/
+/
 ├── data/           # Carpeta de configuración externa (opcional)
 │   ├── config.json # Configuración general del sitio
 │   └── sites.json  # Lista de sitios a monitorear
@@ -68,19 +68,6 @@ Este archivo contiene la lista de sitios a monitorear:
 ```
 
 Puedes modificar ambos archivos según tus necesidades. Los cambios se reflejan automáticamente en el dashboard.
-
-### Estructura de Archivos
-
-```
-lacuevadev/
-├── data/           # Carpeta de configuración (montada como volumen)
-│   ├── config.json # Configuración general del sitio
-│   └── sites.json  # Lista de sitios a monitorear
-├── src/
-│   ├── public/     # Archivos estáticos
-│   └── server.js   # Servidor Express
-└── compose.yml     # Configuración de Docker
-```
 
 ## Despliegue con Docker Compose
 
@@ -138,10 +125,11 @@ El proyecto puede desplegarse de dos formas:
 
 ## Notas importantes
 
-- Si se configura el `compose.yml` para usar configuración externa, los archivos deben existir aunque estén vacíos
+- Si se configura el `compose.yml` para usar configuración externa, los archivos deben existir con un contenido válido.
 - Si no se monta un volumen externo, se usará la configuración por defecto en `src/data/`
 - Los cambios en los archivos de configuración se aplican automáticamente sin reiniciar el contenedor
 - Se recomienda usar configuración externa para mantener la configuración al actualizar la imagen
+- La validación de las URLs se hace en el servidor para mantener la consistencia ente los clientes
 
 ---
 
