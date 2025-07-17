@@ -98,6 +98,7 @@ function createSiteCard(site) {
   siteName.textContent = site.name;
 
   const statusLight = document.createElement('div');
+  statusLight.className = 'status-light yellow';
 
   card.appendChild(favicon);
   card.appendChild(siteName);
