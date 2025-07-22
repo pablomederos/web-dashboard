@@ -82,6 +82,31 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
+async function getFavicon(url) {
+  // Intenta primero con Google Favicon Service a través de nuestro proxy
+  try {
+    const response = await fetch(`/api/favicon/google?url=${encodeURIComponent(url)}`);
+    if (response.ok && response.headers.get('content-type').startsWith('image/')) {
+      return response.url;
+    }
+  } catch (error) {
+    console.warn('Error al obtener favicon de Google:', error);
+  }
+
+  // Si falla Google, intenta obtener el favicon directamente del sitio a través de nuestro proxy
+  try {
+    const response = await fetch(`/api/favicon/site?url=${encodeURIComponent(url)}`);
+    if (response.ok && response.headers.get('content-type').startsWith('image/')) {
+      return response.url;
+    }
+  } catch (error) {
+    console.warn('Error al obtener favicon del sitio:', error);
+  }
+
+  // Si todo falla, retorna null
+  return null;
+}
+
 function createSiteCard(site) {
   const card = document.createElement('a');
   card.className = 'site-card';
@@ -91,7 +116,14 @@ function createSiteCard(site) {
   const favicon = document.createElement('img');
   favicon.className = 'favicon';
   favicon.alt = 'favicon';
-  favicon.src = `https://www.google.com/s2/favicons?domain=${encodeURIComponent(site.url)}`;
+  favicon.src = '/favicon.ico'; // Favicon por defecto mientras se carga
+
+  // Intenta obtener el favicon
+  getFavicon(site.url).then(faviconUrl => {
+    if (faviconUrl) {
+      favicon.src = faviconUrl;
+    }
+  });
 
   const siteName = document.createElement('span');
   siteName.className = 'site-name';
