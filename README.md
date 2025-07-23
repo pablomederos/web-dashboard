@@ -10,6 +10,12 @@ Este proyecto es un dashboard web minimalista y moderno para monitorear el estad
 - Configuración mediante archivos JSON externos
 - Actualización en tiempo real de la configuración
 
+## Captura de pantalla
+
+<img width="1197" height="607" alt="image" src="https://github.com/user-attachments/assets/7653645e-9097-4aed-a30f-2e8bcfaf8387" />
+
+
+
 ## Estructura del Proyecto
 
 ```
